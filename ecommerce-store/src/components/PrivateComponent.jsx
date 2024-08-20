@@ -8,7 +8,7 @@ export const PrivateComponent = () => {
   
   const fetchProducts = async () => {
     try {
-      const response = await fetch("https://merry-moxie-6d2ca1.netlify.app/.netlify/functions/api/products", {
+      const response = await fetch(".netlify/functions/api/products", {
         headers: {
           authorization: `bearer ${JSON.parse(localStorage.getItem('token'))}`
         }

@@ -12,7 +12,7 @@ export const Signup = () => {
   const handleSignup = async (e) => {
     e.preventDefault();
     // Add your signup logic here, e.g., making an API request to create a new user.
-    let result = await fetch('https://merry-moxie-6d2ca1.netlify.app/.netlify/functions/api/signup', {
+    let result = await fetch('.netlify/functions/api/signup', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

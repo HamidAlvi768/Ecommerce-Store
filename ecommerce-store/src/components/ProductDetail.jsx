@@ -13,7 +13,7 @@ const ProductDetail = () => {
     const fetchProduct = async () => {
       // Replace with actual API call
       const response = await fetch(
-        `https://merry-moxie-6d2ca1.netlify.app/.netlify/functions/api/products/${id}`,
+        `.netlify/functions/api/products/${id}`,
         {
           headers: {
             authorization: `bearer ${JSON.parse(

@@ -46,7 +46,7 @@ const Cart = () => {
   const handleSubmitOrder = async () => {
     try {
       let userEmail = localStorage.getItem("userEmail");
-      let response = await fetch("https://merry-moxie-6d2ca1.netlify.app/.netlify/functions/api/orders/add", {
+      let response = await fetch(".netlify/functions/api/orders/add", {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
