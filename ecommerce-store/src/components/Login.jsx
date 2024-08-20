@@ -12,7 +12,7 @@ export const Login = () => {
     // Add your login logic here, e.g., making an API request to authenticate the user.
     
    try {
-     let result = await fetch(".netlify/functions/api/login", {
+     let result = await fetch("https://merry-moxie-6d2ca1.netlify.app/.netlify/functions/api/login", {
        method: "POST",
        headers: {
          "Content-Type": "application/json"       
