@@ -1,3 +1,4 @@
+import { API_URL } from "../config";
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import ProductList from './ProductList';
@@ -19,7 +20,7 @@ const Shop = () => {
 const fetchProducts = async () => {
   try {
     // Replace with actual API call
-    const response = await fetch('https://merry-moxie-6d2ca1.netlify.app/.netlify/functions/api/products',{
+    const response = await fetch(`${API_URL}/products`,{
       headers: {
         authorization: `bearer ${JSON.parse(localStorage.getItem('token'))}`
       }
@@ -54,7 +55,7 @@ const fetchProducts = async () => {
     let search = e.target.value;
     if(search){
 
-      let result = await fetch(`https://merry-moxie-6d2ca1.netlify.app/.netlify/functions/api/products/search/${search}`);
+      let result = await fetch(`${API_URL}/products/search/${search}`);
       result = await result.json();
       setFilteredProducts(result);
     }

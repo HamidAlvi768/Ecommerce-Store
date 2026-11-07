@@ -1,3 +1,4 @@
+import { API_URL } from "../config";
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
@@ -12,7 +13,7 @@ export const Login = () => {
     // Add your login logic here, e.g., making an API request to authenticate the user.
     
    try {
-     let result = await fetch("https://merry-moxie-6d2ca1.netlify.app/.netlify/functions/api/login", {
+     let result = await fetch(`${API_URL}/login`, {
        method: "POST",
        headers: {
          "Content-Type": "application/json"       
@@ -30,6 +31,8 @@ export const Login = () => {
          localStorage.setItem('userEmail', JSON.stringify(result.user.email));
          localStorage.setItem("token", JSON.stringify(result.auth));
          navigate('/');
+       } else {
+         alert(result.result || "Login failed");
        }
    } catch (error) {
     console.log(error)

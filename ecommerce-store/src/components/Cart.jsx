@@ -1,3 +1,4 @@
+import { API_URL } from "../config";
 // src/components/Cart.js
 import useCart from '../Context/useCart';
 import React, { useEffect, useState } from 'react';
@@ -46,7 +47,7 @@ const Cart = () => {
   const handleSubmitOrder = async () => {
     try {
       let userEmail = localStorage.getItem("userEmail");
-      let response = await fetch("https://merry-moxie-6d2ca1.netlify.app/.netlify/functions/api/orders/add", {
+      let response = await fetch(`${API_URL}/orders/add`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
