@@ -1,16 +1,14 @@
 import React from 'react'
-import useCart  from '../Context/useCart';
+import useCart from '../Context/useCart';
 import { MdDelete } from "react-icons/md";
+import { assetUrl } from '../config';
 
-const CartItem = ({ item, handleQuantityChange, index, }) => {
-  const {removeItem ,cartItems , state} = useCart();
-  const handleRemoveItem = (id) => {
-    removeItem(id);
-  }
+const CartItem = ({ item, handleQuantityChange }) => {
+  const { removeItem } = useCart();
   return (
     <tr>
       <td>
-        <img src={item.item.image} alt={item.item.name} className="product-image" />
+        <img src={assetUrl(item.item.image)} alt={item.item.name} className="product-image" />
         <span>{item.item.name}</span>
       </td>
       <td>${item.item.price}</td>
@@ -20,7 +18,7 @@ const CartItem = ({ item, handleQuantityChange, index, }) => {
         <button onClick={() => handleQuantityChange(item.item._id, 'increment')}>+</button>
       </td>
       <td>${(item.item.price * (item.amount || 1)).toFixed(2)}</td>
-      <td><MdDelete className='delete-icon' onClick={()=>handleRemoveItem(item.item._id)}></MdDelete></td>
+      <td><MdDelete className='delete-icon' onClick={() => removeItem(item.item._id)}></MdDelete></td>
     </tr>
   )
 }

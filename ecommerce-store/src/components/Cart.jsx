@@ -1,30 +1,24 @@
-import { API_URL } from "../config";
-// src/components/Cart.js
+import { API_URL, authHeader } from "../config";
+// src/components/Cart.jsx  (the cart page is also the checkout)
 import useCart from '../Context/useCart';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import CartItem from './CartItem';
 
 const Cart = () => {
-  const { cartItems, dispatch, getLocalCartData } = useCart();
+  const { cartItems, dispatch } = useCart();
   const navigate = useNavigate();
   const [showPopup, setShowPopup] = useState(false);
   const [address, setAddress] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [orderConfirmation, setOrderConfirmation] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
 
-  useEffect(() => {
-    let localCartData = localStorage.getItem("cart");
-    if(localCartData === "undefined") {
-      localStorage.removeItem("cart");
-    }
-  }, []);
-  
   const handleQuantityChange = async (id, operation) => {
     const updatedItems = cartItems.map(item => {
       if (item.item._id === id) {
         let newAmount = item.amount || 1;
-        if (operation === 'increment') {
+        if (operation === 'increment' && newAmount < 100) {
           newAmount += 1;
         } else if (operation === 'decrement' && newAmount > 1) {
           newAmount -= 1;
@@ -41,38 +35,48 @@ const Cart = () => {
   };
 
   const handleCheckout = async () => {
+    if (!cartItems.length) {
+      alert('Your cart is empty');
+      return;
+    }
     setShowPopup(true);
   };
 
   const handleSubmitOrder = async () => {
+    if (!address.trim() || !phoneNumber.trim()) {
+      alert('Please enter your address and phone number');
+      return;
+    }
+    setSubmitting(true);
     try {
-      let userEmail = localStorage.getItem("userEmail");
-      let response = await fetch(`${API_URL}/orders/add`, {
+      // Only product ids and quantities are sent; the server looks up the prices.
+      const response = await fetch(`${API_URL}/orders`, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
+        headers: { 'Content-Type': 'application/json', ...authHeader() },
         body: JSON.stringify({
-          order_data: cartItems,
-          email: userEmail.replace(/"/g, ''),
-          order_date: new Date().toDateString(),
-          address: address,
-          phoneNumber: phoneNumber
-        })
+          items: cartItems.map((line) => ({ _id: line.item._id, amount: line.amount || 1 })),
+          address,
+          phoneNumber,
+        }),
       });
-      console.log("JSON RESPONSE:::::", response.status)
-      if (response.status === 200) {
-        dispatch({ type: "DROP" })
+      const result = await response.json().catch(() => ({}));
+      if (response.ok) {
+        dispatch({ type: "DROP" });
         setShowPopup(false);
         setAddress('');
         setPhoneNumber('');
         setOrderConfirmation(true);
-        setTimeout(() => {
-          setOrderConfirmation(false);
-        }, 3000);
+        setTimeout(() => setOrderConfirmation(false), 3000);
+      } else if (response.status === 401) {
+        alert('Your session expired. Please log in again.');
+        navigate('/login');
+      } else {
+        alert(result.message || 'Could not place the order');
       }
     } catch (error) {
-      console.error("Error during checkout:", error);
+      alert('Cannot reach the server. Is the backend running?');
+    } finally {
+      setSubmitting(false);
     }
   };
 
@@ -96,7 +100,7 @@ const Cart = () => {
           </thead>
           <tbody>
             {cartItems && cartItems.length > 0 && cartItems.map((item,index) => (
-              <CartItem key={item._id} index={index} item={item} amount={item.amount} handleQuantityChange={handleQuantityChange} />
+              <CartItem key={item.item._id} item={item} handleQuantityChange={handleQuantityChange} />
             ))}
           </tbody>
         </table>
@@ -132,7 +136,9 @@ const Cart = () => {
             value={phoneNumber}
             onChange={(e) => setPhoneNumber(e.target.value)}
           />
-          <button onClick={handleSubmitOrder}>Submit Order</button>
+          <button onClick={handleSubmitOrder} disabled={submitting}>
+            {submitting ? 'Placing order...' : 'Submit Order'}
+          </button>
         </div>
       )}
       {orderConfirmation && (

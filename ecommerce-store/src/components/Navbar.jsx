@@ -8,7 +8,8 @@ const Navbar = () => {
   const auth = localStorage.getItem("token");
   const navigate = useNavigate();
   const logout = () => {
-    localStorage.clear();
+    // Keep the cart; only forget the login.
+    ["token", "user", "userEmail"].forEach((k) => localStorage.removeItem(k));
     navigate("/");
   };
   return (

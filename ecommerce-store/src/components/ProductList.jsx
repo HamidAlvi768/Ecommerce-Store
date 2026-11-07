@@ -3,8 +3,8 @@ import ProductCard from './ProductCard';
 
 const ProductList = ({ products }) => (
   <div className="product-list product-grid">
-    {products && products.length > 0 && products?.map(product => (
-      <ProductCard key={product.id} product={product} />
+    {Array.isArray(products) && products.map(product => (
+      <ProductCard key={product._id} product={product} />
     ))}
   </div>
 );

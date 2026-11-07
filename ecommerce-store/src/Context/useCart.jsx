@@ -1,35 +1,30 @@
-import CartContext from "./CartContext";
-// src/hooks/useCart.js
-
+// src/Context/useCart.jsx
 import { useContext } from "react";
+import CartContext from "./CartContext";
 
 const useCart = () => {
-  const { state, dispatch, amount, setAmount, setExpired, expired } = useContext(CartContext);
+  const { state, dispatch, amount, setAmount, showToast } = useContext(CartContext);
 
-  const addToCart = (item, amount) => {
-    try {
-      if (!item || typeof amount !== 'number' || amount <= 0) {
-        throw new Error('Invalid item or amount');
-      }
-      dispatch({ type: "ADD_TO_CART", payload: { item, amount } });
-    } catch (error) {
-      console.error('Error adding item to cart:', error.message);
-      // You can add additional error handling here, such as displaying a user-friendly message
+  const addToCart = (item, qty = 1) => {
+    const n = Number(qty);
+    if (!item?._id || !Number.isInteger(n) || n <= 0) {
+      console.error("Invalid item or amount");
+      return;
     }
+    const inCart = state.cartItems.some((x) => x.item._id === item._id);
+    dispatch({ type: "ADD_TO_CART", payload: { item, amount: n } });
+    showToast(inCart ? `Added ${n} more ${item.name} to cart` : `${item.name} added to cart`);
   };
 
   const removeItem = (id) => {
     dispatch({ type: "REMOVE_FROM_CART", payload: id });
-    // console.log('updated cart', state.cartItems)
-    console.log(id)
-
   };
 
   return {
     cartItems: state.cartItems,
     addToCart,
     dispatch,
-    amount: state.amount,
+    amount,
     setAmount,
     removeItem,
   };

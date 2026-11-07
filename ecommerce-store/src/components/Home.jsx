@@ -1,17 +1,9 @@
 import React from "react";
-import useCart from "../Context/useCart";
 import { useNavigate } from "react-router-dom";
 
-const Home = () => { 
-
-  const { expired } = useCart();
+const Home = () => {
 
   const navigate = useNavigate();
-
-  if (expired) {
-    localStorage.clear();
-    throw new Error('Token expired');
-  }
 
   const navigateToShop = ()=> {
     navigate("/shop")

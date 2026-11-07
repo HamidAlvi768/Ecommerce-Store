@@ -1,5 +1,5 @@
-import { API_URL } from "../config";
-// components/ProductDetail.js
+import { API_URL, assetUrl } from "../config";
+// components/ProductDetail.jsx
 import React, { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import useCart from "../Context/useCart";
@@ -7,33 +7,31 @@ import useCart from "../Context/useCart";
 const ProductDetail = () => {
   const { id } = useParams();
   const [product, setProduct] = useState(null);
+  const [notFound, setNotFound] = useState(false);
   const [activeTab, setActiveTab] = useState("description");
   const { amount, setAmount, addToCart } = useCart();
 
   useEffect(() => {
+    setAmount(1);
+    setNotFound(false);
     const fetchProduct = async () => {
-      // Replace with actual API call
-      const response = await fetch(
-        `${API_URL}/products/${id}`,
-        {
-          headers: {
-            authorization: `bearer ${JSON.parse(
-              localStorage.getItem("token")
-            )}`,
-          },
-        }
-      );
-      const data = await response.json();
-      setProduct(data);
+      const response = await fetch(`${API_URL}/products/${id}`);
+      if (!response.ok) {
+        setNotFound(true);
+        return;
+      }
+      setProduct(await response.json());
     };
-    fetchProduct();
-  }, [id]);
+    fetchProduct().catch(() => setNotFound(true));
+  }, [id, setAmount]);
 
   const handleAddToCart = (e) => {
     e.preventDefault();
     addToCart(product, amount);
+    setAmount(1);
   };
 
+  if (notFound) return <div style={{ padding: 40 }}>Product not found. <Link to="/shop">Back to shop</Link></div>;
   if (!product) return <div>Loading...</div>;
 
   return (
@@ -42,7 +40,7 @@ const ProductDetail = () => {
             <Link to="/">Home</Link> / <Link to="/shop">Shop</Link> / {product.name}
           </div>      <div className="product-main">
         <div className="product-image">
-          <img src={product.image} alt={product.name} />
+          <img src={assetUrl(product.image)} alt={product.name} />
         </div>
         <div className="product-info">
           <h1>{product.name}</h1>
@@ -55,9 +53,11 @@ const ProductDetail = () => {
             <input
               type="number"
               value={amount}
-              onChange={(e) => setAmount(parseInt(e.target.value) || 1)}
+              min="1"
+              max="100"
+              onChange={(e) => setAmount(Math.min(100, Math.max(1, parseInt(e.target.value) || 1)))}
             />
-            <button onClick={() => setAmount(amount + 1)}>+</button>
+            <button onClick={() => setAmount(Math.min(100, amount + 1))}>+</button>
           </div>
           <button className="add-to-cart" onClick={handleAddToCart}>
             ADD TO CART
