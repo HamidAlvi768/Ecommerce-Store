@@ -15,9 +15,10 @@ const showToast = (text) => {
     left: "50%",
     transform: "translateX(-50%)",
     padding: "10px 16px",
-    backgroundColor: "#f0f0f0",
-    color: "#111",
-    border: "1px solid #ccc",
+    backgroundColor: "var(--surface)",
+    color: "var(--text)",
+    border: "1px solid var(--border)",
+    boxShadow: "0 2px 10px var(--shadow)",
     borderRadius: "5px",
     zIndex: 1000,
   });

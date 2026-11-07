@@ -2,6 +2,7 @@ import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { FaShoppingCart } from "react-icons/fa";
 import useCart from "../Context/useCart";
+import { ThemeToggle } from "./ThemeToggle";
 
 const Navbar = () => {
   const { cartItems } = useCart();
@@ -43,6 +44,7 @@ const Navbar = () => {
             <Link to="/account">
               <i className="fas fa-user"></i>
             </Link>
+            <ThemeToggle />
           </div>
         </>
       ) : (
@@ -55,6 +57,7 @@ const Navbar = () => {
               <Link to="/login">Login</Link>
             </li>
           </ul>
+          <ThemeToggle />
         </>
       )}
     </nav>

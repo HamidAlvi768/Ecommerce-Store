@@ -1,11 +1,77 @@
 /* //App.css */
 @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+
+/* ---------- Theme ----------
+   All colors that change between light and dark mode are variables.
+   <html data-theme="light|dark"> picks the set (see src/theme.js). */
+:root {
+  color-scheme: light;
+  --bg: #ffffff;
+  --bg-subtle: #f8f8f8;
+  --surface: #ffffff;
+  --text: #000000;
+  --text-soft: #333333;
+  --text-muted: #666666;
+  --text-faint: #aaaaaa;
+  --border: #e0e0e0;
+  --border-soft: #eeeeee;
+  --inverse-bg: #333333;
+  --inverse-text: #ffffff;
+  --shadow: rgba(0, 0, 0, 0.2);
+  --accent: #4caf50;
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark; /* dark built-in inputs, selects, sliders, scrollbars */
+  --bg: #121212;
+  --bg-subtle: #181a1b;
+  --surface: #1f2123;
+  --text: #ececec;
+  --text-soft: #d4d4d4;
+  --text-muted: #a3a3a3;
+  --text-faint: #7c7c7c;
+  --border: #3a3d40;
+  --border-soft: #2c2f31;
+  --inverse-bg: #e8e8e8;
+  --inverse-text: #111111;
+  --shadow: rgba(0, 0, 0, 0.6);
+}
+
 body {
   font-family: Arial, sans-serif;
   margin: 0;
   padding: 0;
   max-width: 100%;
   overflow-x: hidden;
+  background-color: var(--bg);
+  color: var(--text);
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.2rem;
+  height: 2.2rem;
+  margin-left: 1rem;
+  padding: 0;
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  background: var(--surface);
+  color: var(--text-soft);
+  font-size: 1.1rem;
+  cursor: pointer;
+}
+
+.theme-toggle:hover {
+  color: var(--accent);
+  border-color: var(--accent);
+}
+
+/* The login/signup pages have no navbar icons area, so the toggle sits on the right */
+.navbar-links + .theme-toggle {
+  margin-left: auto;
 }
 
 .app-container {
@@ -26,7 +92,7 @@ header {
 
 a {
   text-decoration: none;
-  color: black;
+  color: var(--text);
 }
 
 .navbar {
@@ -40,7 +106,7 @@ a {
 .navbar-logo a {
   font-size: 1.5rem;
   font-weight: bold;
-  color: #333;
+  color: var(--text-soft);
   text-decoration: none;
 }
 
@@ -56,7 +122,7 @@ a {
 }
 
 .navbar-links a {
-  color: #333;
+  color: var(--text-soft);
   text-decoration: none;
   font-weight: 500;
 }
@@ -67,7 +133,7 @@ a {
 }
 
 .navbar-icons a {
-  color: #333;
+  color: var(--text-soft);
   text-decoration: none;
   margin-left: 1rem;
   font-size: 1.2rem;
@@ -100,7 +166,7 @@ footer a {
 
 
 section {
-  background-color: #f8f8f8;
+  background-color: var(--bg-subtle);
   position: absolute;
   width: 100vw;
   height: 100vh;
@@ -117,14 +183,14 @@ section .signin,
 section .signup {
   position: absolute;
   width: 400px;
-  background: white;
+  background: var(--surface);
   z-index: 1000;
   display: flex;
   justify-content: center;
   align-items: center;
   padding: 40px;
   border-radius: 4px;
-  box-shadow: 0 0.3rem 1rem -0.2rem rgba(0, 0, 0, 0.2);
+  box-shadow: 0 0.3rem 1rem -0.2rem var(--shadow);
   /* margin-top: 7rem; */
 }
 
@@ -149,7 +215,7 @@ section .signup .content {
 section .signin .content h2,
 section .signup .content h2 {
   font-size: 2em;
-  color: black;
+  color: var(--text);
   text-transform: uppercase;
   transform: translateY(2rem);
 }
@@ -173,7 +239,7 @@ section .signup .content .form .inputBox input {
   outline: none;
   padding: 25px 10px 7.5px;
   border-radius: 4px;
-  color: black;
+  color: var(--text);
   font-weight: 500;
   font-size: 1em;
   transform: translateX(1rem);
@@ -184,7 +250,7 @@ section .signup .content .form .inputBox i {
   left: 20px;
   padding: 15px 10px;
   font-style: normal;
-  color: #aaa;
+  color: var(--text-faint);
   transition: 0.5s;
   pointer-events: none;
 }
@@ -194,7 +260,7 @@ section .signup .content .form .inputBox input:focus ~ i,
 section .signup .content .form .inputBox input:valid ~ i {
   transform: translateY(-7.5px);
   font-size: 0.8em;
-  color: #aaa;
+  color: var(--text-faint);
 }
 .signin .content .form .links,
 section .signup .content .form .links {
@@ -205,19 +271,19 @@ section .signup .content .form .links {
 }
 .signin .content .form .links a,
 section .signup .content .form .links a {
-  color: black;
+  color: var(--text);
   text-decoration: none;
 }
 .signin .content .form .links a:nth-child(2),
 section .signup .content .form .links a:nth-child(2) {
-  color: black;
+  color: var(--text);
   font-weight: 600;
 }
 .signin .content .form .inputBox input[type="submit"],
 section .signup .content .form .inputBox input[type="submit"] {
   padding: 10px;
-  background: #333;
-  color: white;
+  background: var(--inverse-bg);
+  color: var(--inverse-text);
   font-weight: 600;
   font-size: 1.35em;
   letter-spacing: 0.05em;
@@ -239,6 +305,8 @@ input[type="submit"]:hover {
 .hero-section {
   position: relative;
   height: 80vh;
+  /* Photo banner with dark text: keep a light fallback in both themes */
+  background-color: #dfeef2;
   background-image: url("https://websitedemos.net/earth-store-02/wp-content/uploads/sites/1171/2022/10/Banner.jpg");
   background-size: cover;
   background-position: center;
@@ -315,7 +383,7 @@ input[type="submit"]:hover {
 }
 
 .testimonial-section {
-  background-color: #f8f8f8;
+  background-color: var(--bg-subtle);
   padding: 2rem;
   text-align: center;
   border: 1px solid;
@@ -333,7 +401,7 @@ input[type="submit"]:hover {
 }
 
 .testimonial {
-  background-color: white;
+  background-color: var(--surface);
   padding: 1rem;
   border-radius: 8px;
   max-width: 38ch;
@@ -342,6 +410,8 @@ input[type="submit"]:hover {
 .postcard-section {
   text-align: center;
   padding: 2rem;
+  /* Photo banner with dark text: keep a light fallback in both themes */
+  background-color: #f8f8f8;
   background-image: url("https://websitedemos.net/earth-store-02/wp-content/uploads/sites/1171/2022/10/Call-to-action.jpg");
   background-size: inherit;
   background-position: center;
@@ -363,7 +433,7 @@ input[type="submit"]:hover {
   display: flex;
   justify-content: space-around;
   padding: 2rem;
-  background-color: #f8f8f8;
+  background-color: var(--bg-subtle);
   height: fit-content;
   position: relative;
 
@@ -445,7 +515,7 @@ input[type="submit"]:hover {
   cursor: pointer;
   text-align: left;
   padding: 0.5rem 0;
-  color: #666;
+  color: var(--text-muted);
 }
 
 .categories button.active {
@@ -461,12 +531,12 @@ input[type="submit"]:hover {
 }
 
 .product-card {
-  border: 1px solid #eee;
+  border: 1px solid var(--border-soft);
   padding: 1rem;
   display: flex;
     flex-direction: column;
     text-decoration: none;
-  color: black;
+  color: var(--text);
 }
 
 
@@ -482,7 +552,7 @@ input[type="submit"]:hover {
 }
 
 .product-category {
-  color: #666;
+  color: var(--text-muted);
   font-size: 0.9rem;
 }
 
@@ -500,7 +570,7 @@ input[type="submit"]:hover {
 
 .breadcrumb {
   margin-bottom: 2rem;
-  color: #666;
+  color: var(--text-muted);
 }
 
 .product-main {
@@ -560,7 +630,7 @@ input[type="submit"]:hover {
 
 .tab-headers {
   display: flex;
-  border-bottom: 1px solid #ddd;
+  border-bottom: 1px solid var(--border);
 }
 
 .tab-headers button {
@@ -590,7 +660,7 @@ input[type="submit"]:hover {
 }
 
 .related-product-card {
-  border: 1px solid #eee;
+  border: 1px solid var(--border-soft);
   padding: 1rem;
 }
 
@@ -604,7 +674,7 @@ input[type="submit"]:hover {
 }
 
 .related-product-category {
-  color: #666;
+  color: var(--text-muted);
   font-size: 0.9rem;
 }
 
@@ -631,7 +701,7 @@ input[type="submit"]:hover {
 
 .cart-table th,
 .cart-table td {
-  border: 1px solid #e0e0e0;
+  border: 1px solid var(--border);
   padding: 10px;
   text-align: center;
 }
@@ -656,24 +726,24 @@ input[type="submit"]:hover {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background-color: #ffffff;
+  background-color: var(--surface);
   padding: 20px;
   border-radius: 5px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 2px 10px var(--shadow);
   z-index: 1000;
   width: 300px;
 }
 
 .popup h2 {
   margin-bottom: 15px;
-  color: #333;
+  color: var(--text-soft);
 }
 
 .popup input {
   width: 100%;
   padding: 10px;
   margin-bottom: 10px;
-  border: 1px solid #e0e0e0;
+  border: 1px solid var(--border);
   border-radius: 4px;
   transform: translateX(-9px);
 }
@@ -702,7 +772,7 @@ input[type="submit"]:hover {
   color: #fff;
   padding: 15px 30px;
   border-radius: 5px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 2px 10px var(--shadow);
   z-index: 1000;
   font-size: 1.2rem;
   text-align: center;
@@ -730,7 +800,7 @@ input[type="submit"]:hover {
 .coupon-section input {
   flex: 1;
   padding: 10px;
-  border: 1px solid #e0e0e0;
+  border: 1px solid var(--border);
   margin-right: 10px;
 }
 
@@ -747,7 +817,7 @@ input[type="submit"]:hover {
 }
 
 .cart-totals {
-  border: 1px solid #e0e0e0;
+  border: 1px solid var(--border);
   padding: 20px;
 }
 
@@ -823,7 +893,7 @@ input[type="submit"]:hover {
 .form-group textarea {
   width: 100%;
   padding: 10px;
-  border: 1px solid #e0e0e0;
+  border: 1px solid var(--border);
 }
 
 .form-group textarea {
@@ -832,7 +902,7 @@ input[type="submit"]:hover {
 
 .order-summary {
   flex: 1;
-  border: 1px solid #e0e0e0;
+  border: 1px solid var(--border);
   padding: 20px;
 }
 
@@ -853,7 +923,7 @@ input[type="submit"]:hover {
 
 .order-summary p {
   margin-bottom: 20px;
-  color: #555;
+  color: var(--text-muted);
 }
 
 .order-summary button {
