@@ -1,13 +1,11 @@
 import { API_URL } from "../config";
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Login } from './Login';
 
 export const Signup = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [user, setUser] = useState('')
   const navigate = useNavigate();
 
   const handleSignup = async (e) => {
@@ -29,7 +27,6 @@ export const Signup = () => {
 
     if (result.auth) {
       // Set user data only if successful signup
-      setUser(result);
       localStorage.setItem("user", JSON.stringify(result.result));
       localStorage.setItem("userEmail", JSON.stringify(result.result.email));
       localStorage.setItem("token", JSON.stringify(result.auth));

@@ -1,9 +1,7 @@
 import { API_URL } from "../config";
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import ProductList from './ProductList';
 import Sidebar from './Sidebar';
-import useCart from '../Context/useCart';
 
 const Shop = () => {
   const [products, setProducts] = useState([]);
@@ -11,10 +9,6 @@ const Shop = () => {
   const [priceRange, setPriceRange] = useState([10, 300]);
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [sortBy, setSortBy] = useState('default');
-
-  const { expired ,setExpired } = useCart();
-
-  const navigate = useNavigate();
 
 // Fetch products from API
 const fetchProducts = async () => {

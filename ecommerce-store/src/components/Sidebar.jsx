@@ -3,9 +3,8 @@ import React from 'react';
 const Sidebar = ({ priceRange, setPriceRange, selectedCategory, setSelectedCategory, productQty, products, searchProduct }) => {
 
   const getUniqueData = (data, property) => {
-    let newVal = data.map(curElem => curElem[property]);
-    return newVal = ["All", ...new Set(newVal)]
-    console.log(newVal);
+    const values = data.map(curElem => curElem[property]);
+    return ["All", ...new Set(values)];
   };
    let categoryOnlyData = getUniqueData(products, 'category');
 
